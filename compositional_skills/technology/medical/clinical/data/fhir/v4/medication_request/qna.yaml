@@ -1,0 +1,64 @@
+version: 2
+task_description: |
+    This skill provides the ability to output a MedicationRequest in FHIR v4 format.
+created_by: rdwj
+seed_examples:
+  - context: |
+      A MedicationRequest is An order or request for both supply of the medication and the instructions for
+      administration of the medication to a patient. The resource is called \"MedicationRequest\" rather than
+      \"MedicationPrescription\" or \"MedicationOrder\" to generalize the use across inpatient and outpatient
+      settings, including care plans, etc., and to harmonize with workflow patterns.
+    question: |
+      Is a MedicationRequest different from a MedicationPrescription or MedicationOrder?
+    answer: |
+      A MedicationRequest is distinct from a MedicationPrescription or MedicationOrder in that a MedicationRequest
+      has its own key/value pairs and data requirements, and is used across both inpatient and outpatient settings.
+  - context: |
+      "properties": {
+        "resourceType": {
+          "description": "This is a MedicationRequest resource",
+          "const": "MedicationRequest"
+        }
+      example:
+         "resourceType": "Medication"
+    question: What is the resourceType in a MedicationRequest
+    answer: |
+      The important attributes are "resourceType", which includes "description", which should contain the string
+      'This is a MedicationRequest resource', and "const", which should contain the string 'MedicationRequest'
+  - context: |
+      "medicationReference": {
+          "description": "Identifies the medication being requested. This is a link to a resource that represents the
+          medication which may be the details of the medication or simply an attribute carrying a code that identifies
+          the medication from a known list of medications.",
+          "$ref": "#/definitions/Reference"
+        }
+      example:
+          "medicationReference": {"reference": "#med0310"}
+    question: What does the medicationReference need to contain?
+    answer: The medicationReference needs to contain a reference to the specific medication being requested.
+  - context: |
+      "subject": {
+          "description": "A link to a resource representing the person or set of individuals to whom the
+            medication will be given.",
+          "$ref": "#/definitions/Reference"
+        }
+      example:
+        {"reference": "Patient/pat1", "display": "Donald Duck"}
+    question: What does the subject field need to contain in a MedicationRequest?
+    answer: |
+      The subject field needs to contain a link to the resource representing the person to whom the
+      prescription will be given.
+  - context: |
+      "reasonCode": {
+          "description": "The reason or the indication for ordering or not ordering the medication.",
+          "items": {
+            "$ref": "#/definitions/CodeableConcept"
+          },
+          "type": "array"
+      example:
+        [{"coding": [{"system": "http://snomed.info/sct", "code": "297217002", "display": "Rib Pain (finding)"}]}]
+    question: What does the reasonCode need to contain in a MedicationRequest?
+    answer: |
+      The reasonCode needs to contain the reason or indication for ordering or not ordering the medication.
+      This needs to include the system the code is from, for instance, snomed, the code from that system,
+      and what to display.

@@ -1,0 +1,5 @@
+Title of work: MedicationRequest (FHIR Object)
+Link to work: https://github.com/rdwj/fhir_prep_ilab/blob/main/v4/JSON/FHIRv4_Medication_Request.pdf
+Revision: https://github.com/rdwj/fhir_prep_ilab/blob/main/v4/JSON/FHIRv4_Medication_Request.pdf
+License of the work: CC0
+Creator names: HL7.org
