@@ -133,7 +133,7 @@ document_outline: |
   Several completed examples are included.
 document:
   repo: https://github.com/rdwj/fhir_prep_ilab
-  commit: d98ce01390c25eb6e4d65dd6f26d8fbc6289fc41
+  commit: 0cffa055c62adf07a7b4d07da44ff6b9bd5207d3
   patterns:
     - FHIRv4_Medication_Request.pdf
     - v4/JSON/FHIRv4_Medication_Request.pdf
