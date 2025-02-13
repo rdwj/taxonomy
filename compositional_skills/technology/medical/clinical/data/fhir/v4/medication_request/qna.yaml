@@ -1,6 +1,5 @@
-version: 2
-task_description: |
-    This skill provides the ability to output a MedicationRequest in FHIR v4 format.
+version: 3
+domain: FHIR v4 MedicationRequest Format
 created_by: rdwj
 seed_examples:
   - context: |
@@ -8,11 +7,20 @@ seed_examples:
       administration of the medication to a patient. The resource is called \"MedicationRequest\" rather than
       \"MedicationPrescription\" or \"MedicationOrder\" to generalize the use across inpatient and outpatient
       settings, including care plans, etc., and to harmonize with workflow patterns.
-    question: |
-      Is a MedicationRequest different from a MedicationPrescription or MedicationOrder?
-    answer: |
-      A MedicationRequest is distinct from a MedicationPrescription or MedicationOrder in that a MedicationRequest
-      has its own key/value pairs and data requirements, and is used across both inpatient and outpatient settings.
+    questions_and_answers:
+      - question: |
+          Is a MedicationRequest different from a MedicationPrescription or MedicationOrder?
+        answer: |
+          A MedicationRequest is distinct from a MedicationPrescription or MedicationOrder in that a MedicationRequest
+          has its own key/value pairs and data requirements, and is used across both inpatient and outpatient settings.
+      - question: |
+          What clinical setting is a MedicationRequest applicable to?
+        answer: |
+          A MedicationRequest is used for either inpatient or outpatient settings.
+      - question: |
+          Can a MedicationRequest be used in a care plan?
+        answer: |
+          Yes, a MedicationRequest can be used in a care plan.
   - context: |
       "properties": {
         "resourceType": {
@@ -21,10 +29,19 @@ seed_examples:
         }
       example:
          "resourceType": "Medication"
-    question: What is the resourceType in a MedicationRequest
-    answer: |
-      The important attributes are "resourceType", which includes "description", which should contain the string
-      'This is a MedicationRequest resource', and "const", which should contain the string 'MedicationRequest'
+    questions_and_answers:
+      - question: |
+          What is the resourceType in a MedicationRequest
+        answer: |
+          The resourceType is the field describing the type of the resource.
+      - question: |
+          What can the resourceType be?
+        answer: |
+          The resourceType of a MedicationRequest will be "Medication".
+      - question: |
+          What is the type of the resourceType field?
+        answer: |
+          The resourceType field is a string.
   - context: |
       "medicationReference": {
           "description": "Identifies the medication being requested. This is a link to a resource that represents the
@@ -34,8 +51,20 @@ seed_examples:
         }
       example:
           "medicationReference": {"reference": "#med0310"}
-    question: What does the medicationReference need to contain?
-    answer: The medicationReference needs to contain a reference to the specific medication being requested.
+    questions_and_answers:
+      - question: |
+          What is the medicationReference field used for?
+        answer: |
+          The medicationReference field identifies the medication being requested.
+      - question: |
+          How does medicationReference connect to data about medications?
+        answer: |
+          This may be a link to a resource with the details of the medication, or a code that can be used to identify
+          the medication in a database.
+      - question: |
+          What is the type of this field?
+        answer: |
+          medicationReference is an object that may contain a key/value pair such as {"reference": "#med0310"}
   - context: |
       "subject": {
           "description": "A link to a resource representing the person or set of individuals to whom the
@@ -44,10 +73,21 @@ seed_examples:
         }
       example:
         {"reference": "Patient/pat1", "display": "Donald Duck"}
-    question: What does the subject field need to contain in a MedicationRequest?
-    answer: |
-      The subject field needs to contain a link to the resource representing the person to whom the
-      prescription will be given.
+    questions_and_answers:
+      - question: |
+          What does the subject field need to contain in a MedicationRequest?
+        answer: |
+          The subject field needs to contain a link to the resource representing the person to whom the
+          prescription will be given.
+      - question: |
+          What kind of subject can the link be referring to?
+        answer: |
+          The subject can be a patient or a group.
+      - question: |
+          What is the type of the field called "subject"?
+        answer: |
+          The subject field is an object containing a reference field and a display field,
+          for example: {"reference": "Patient/pat1", "display": "Donald Duck"}.
   - context: |
       "reasonCode": {
           "description": "The reason or the indication for ordering or not ordering the medication.",
@@ -57,8 +97,43 @@ seed_examples:
           "type": "array"
       example:
         [{"coding": [{"system": "http://snomed.info/sct", "code": "297217002", "display": "Rib Pain (finding)"}]}]
-    question: What does the reasonCode need to contain in a MedicationRequest?
-    answer: |
-      The reasonCode needs to contain the reason or indication for ordering or not ordering the medication.
-      This needs to include the system the code is from, for instance, snomed, the code from that system,
-      and what to display.
+      CodeableConcept:
+      {
+        // from Element: extension
+        "coding" : [{ Coding }], // Code defined by a terminology system
+        "text" : "<string>" // Plain text representation of the concept
+      }
+      Coding:
+      {
+        // from Element: extension
+        "system" : "<uri>", // Identity of the terminology system
+        "version" : "<string>", // Version of the system - if relevant
+        "code" : "<code>", // Symbol in syntax defined by the system
+        "display" : "<string>", // Representation defined by the system
+        "userSelected" : <boolean> // If this coding was chosen directly by the user
+      }
+    questions_and_answers:
+      - question: |
+          What does the reasonCode need to contain in a MedicationRequest?
+        answer: |
+          The reasonCode needs to contain the reason or indication for ordering or not ordering the medication.
+      - question: |
+          What are some examples of information that the reasonCode needs to contain?
+        answer: |
+          This needs to include the system the code is from, for instance, snomed, the code from that system,
+          and what to display.
+      - question: |
+          What is the type of the field called "reasonCode"?
+        answer: |
+          The reasonCode is an array of objects of type CodeableConcept, which contains a coding field of type Coding
+          and a text field of type string.
+document_outline: |
+  This document contains a technical description of the FHIR v4 standard for MedicationRequest. There is
+  an alternative format included. Several types are included for reference on specific object types.
+  Several completed examples are included.
+document:
+  repo: https://github.com/rdwj/fhir_prep_ilab
+  commit: ab8bcda062f7b4cfafc456b37aea9ce084ef2e64
+  patterns:
+    - FHIRv4_Medication_Request.pdf
+    - v4/JSON/FHIRv4_Medication_Request.pdf
